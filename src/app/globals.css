@@ -1,26 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600&display=swap');
 @import "tailwindcss";
 
+/* Gen Z - minimal pastel palette */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #f8fafc; /* very light */
+  --card: #ffffff;
+  --muted: #6b7280;
+  --text: #0f172a;
+  --accent: #8b5cf6; /* pastel purple */
+  --accent-2: #06b6d4; /* teal */
+  --glass: rgba(139,92,246,0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #071025;
+    --card: #071829;
+    --muted: #94a3b8;
+    --text: #e6eef8;
+    --accent: #a78bfa;
+    --accent-2: #22d3ee;
+    --glass: rgba(167,139,250,0.06);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html, body, #__next {
+  height: 100%;
 }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.4;
+}
+
+/* utility for subtle glass accent used on cards */
+.glass {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+
