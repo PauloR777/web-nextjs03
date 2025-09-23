@@ -25,8 +25,9 @@ export const useComments = create<State>((set) => ({
         `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
       );
       set({ items: data });
-    } catch (err: any) {
-      set({ error: err?.message ?? String(err) });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      set({ error: message });
     } finally {
       set({ loading: false });
     }

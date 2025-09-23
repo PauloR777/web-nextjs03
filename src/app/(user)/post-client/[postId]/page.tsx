@@ -1,17 +1,31 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useComments } from "@/store/comments";
 import Link from "next/link";
 
 type Props = { params: Promise<{ postId: string }> | { postId: string } };
 
 export default function PostCommentsPage({ params }: Props) {
-  // Next.js may supply `params` as a Promise; unwrap with React.use()
-  // React.use expects a "Usable"; cast through unknown->any to avoid type error
-  // at compile time while still unwrapping a promised params at runtime.
-  const resolvedParams = React.use(params as unknown as any) as { postId: string };
-  const postId = Number(resolvedParams.postId);
+  // Resolve params safely: Next.js may pass a Promise or a plain object.
+  const [resolvedParams, setResolvedParams] = useState<{ postId: string } | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const tryResolve = async () => {
+      try {
+        const r = await params as { postId: string };
+        if (mounted) setResolvedParams(r);
+      } catch (e) {
+        // If params isn't a promise, it will throw; fall back to direct value
+        if (mounted) setResolvedParams(params as { postId: string });
+      }
+    };
+    tryResolve();
+    return () => { mounted = false; };
+  }, [params]);
+
+  const postId = Number(resolvedParams?.postId ?? NaN);
   const { items, loading, error, fetchData } = useComments();
 
   useEffect(() => {
